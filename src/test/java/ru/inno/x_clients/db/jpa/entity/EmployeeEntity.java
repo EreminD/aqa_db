@@ -43,9 +43,10 @@ public class EmployeeEntity {
     @Basic
     @Column(name = "avatar_url", nullable = true, length = 1024)
     private String avatarUrl;
-    @Basic
-    @Column(name = "company_id", nullable = false)
-    private long companyId;
+
+    @ManyToOne
+    @JoinColumn(name="company_id")
+    private CompanyEntity company;
 
     public int getId() {
         return id;
@@ -135,25 +136,25 @@ public class EmployeeEntity {
         this.avatarUrl = avatarUrl;
     }
 
-    public long getCompanyId() {
-        return companyId;
+
+    public CompanyEntity getCompany() {
+        return company;
     }
 
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeEntity that = (EmployeeEntity) o;
-        return id == that.id && isActive == that.isActive && companyId == that.companyId && Objects.equals(createTimestamp, that.createTimestamp) && Objects.equals(changeTimestamp, that.changeTimestamp) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(middleName, that.middleName) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(birthdate, that.birthdate) && Objects.equals(avatarUrl, that.avatarUrl);
+        if (!(o instanceof EmployeeEntity employee)) return false;
+        return getId() == employee.getId() && isActive() == employee.isActive() && Objects.equals(getCreateTimestamp(), employee.getCreateTimestamp()) && Objects.equals(getChangeTimestamp(), employee.getChangeTimestamp()) && Objects.equals(getFirstName(), employee.getFirstName()) && Objects.equals(getLastName(), employee.getLastName()) && Objects.equals(getMiddleName(), employee.getMiddleName()) && Objects.equals(getPhone(), employee.getPhone()) && Objects.equals(getEmail(), employee.getEmail()) && Objects.equals(getBirthdate(), employee.getBirthdate()) && Objects.equals(getAvatarUrl(), employee.getAvatarUrl()) && Objects.equals(getCompany(), employee.getCompany());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isActive, createTimestamp, changeTimestamp, firstName, lastName, middleName, phone, email, birthdate, avatarUrl, companyId);
+        return Objects.hash(getId(), isActive(), getCreateTimestamp(), getChangeTimestamp(), getFirstName(), getLastName(), getMiddleName(), getPhone(), getEmail(), getBirthdate(), getAvatarUrl(), getCompany());
     }
 
     @Override
@@ -170,7 +171,7 @@ public class EmployeeEntity {
                 ", email='" + email + '\'' +
                 ", birthdate=" + birthdate +
                 ", avatarUrl='" + avatarUrl + '\'' +
-                ", companyId=" + companyId +
+                ", company=" + company.getId() +
                 '}';
     }
 }

@@ -2,6 +2,7 @@ package ru.inno.x_clients.db.jpa.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,16 @@ public class CompanyEntity {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
+    @OneToMany(mappedBy = "company")
+    private List<EmployeeEntity> employees;
+
+    public List<EmployeeEntity> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<EmployeeEntity> employees) {
+        this.employees = employees;
+    }
 
     public long getId() {
         return id;
@@ -56,24 +67,25 @@ public class CompanyEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CompanyEntity company)) return false;
+        return getId() == company.getId() && isActive() == company.isActive() && Objects.equals(getName(), company.getName()) && Objects.equals(getDescription(), company.getDescription()) && Objects.equals(getEmployees(), company.getEmployees());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDescription(), isActive(), getEmployees());
+    }
+
+    @Override
     public String toString() {
         return "CompanyEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", isActive=" + isActive +
+                ", employees=" + employees.size() +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CompanyEntity that)) return false;
-        return getId() == that.getId() && isActive() == that.isActive() && Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), isActive());
     }
 }

@@ -115,7 +115,7 @@ public class JpaDemo {
     }
 
     @Test
-    public void createEmps(){
+    public void createEmps() {
         CompanyEntity company = new CompanyEntity();
         company.setName("Inno");
         company.setDescription("Courses");
@@ -126,7 +126,7 @@ public class JpaDemo {
         entityManager.getTransaction().commit();
 
         EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setCompanyId(company.getId());
+        employee1.setCompany(company);
         employee1.setFirstName("Steve");
         employee1.setLastName("Rogers");
         employee1.setPhone("+7987654345678");
@@ -134,13 +134,12 @@ public class JpaDemo {
         employee1.setChangeTimestamp(Timestamp.valueOf(LocalDateTime.now()));
 
         EmployeeEntity employee2 = new EmployeeEntity();
-        employee2.setCompanyId(company.getId());
+        employee2.setCompany(company);
         employee2.setFirstName("Natasha");
         employee2.setLastName("Romanov");
         employee2.setPhone("+745678934");
         employee2.setCreateTimestamp(Timestamp.valueOf(LocalDateTime.now()));
         employee2.setChangeTimestamp(Timestamp.valueOf(LocalDateTime.now()));
-
 
         entityManager.getTransaction().begin();
         entityManager.persist(employee1);
@@ -149,16 +148,22 @@ public class JpaDemo {
     }
 
     @Test
-    public void iCanGetCompanyAndEmpList(){
+    public void iCanGetCompanyAndEmpList() {
         int id = 3448;
 
         CompanyEntity company = entityManager.find(CompanyEntity.class, id);
 
-        TypedQuery<EmployeeEntity> query = entityManager.createQuery("select obj from EmployeeEntity obj where obj.companyId = :comp_id", EmployeeEntity.class);
-        query.setParameter("comp_id", company.getId());
-        List<EmployeeEntity> emps = query.getResultList();
+        EmployeeEntity shouldBeSteve = company.getEmployees().get(0);
+        EmployeeEntity shouldBeNatasha = company.getEmployees().get(1);
+
+        EmployeeEntity steve = entityManager.find(EmployeeEntity.class, 2455);
+
+
+        System.out.println(steve);
+        System.out.println(steve.getCompany());
 
     }
+
 
     private List<CompanyEntity> getCompaniesByName(String companyName) {
         TypedQuery<CompanyEntity> getByName = entityManager.createQuery("SELECT obj FROM CompanyEntity obj WHERE obj.name=:desiredName", CompanyEntity.class);
