@@ -39,18 +39,20 @@ public class JpaDemo {
         props.put("hibernate.connection.autocommit", "true");
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.format_sql", "true");
+        props.put("hibernate.hbm2ddl.auto", "validate"); //update
 
         PersistenceUnitInfo persistenceUnitInfo = new MyPUI(props);
         HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
         EntityManagerFactory factory = hibernatePersistenceProvider.createContainerEntityManagerFactory(persistenceUnitInfo, persistenceUnitInfo.getProperties());
         entityManager = factory.createEntityManager();
+
     }
 
     @Test
     public void iCanGetCompanyById() {
-        CompanyEntity company2779 = entityManager.find(CompanyEntity.class, 2779);
+        CompanyEntity company2779 = entityManager.find(CompanyEntity.class, 3448);
         assertNotNull(company2779);
-        assertEquals(2779, company2779.getId());
+        assertEquals(3448, company2779.getId());
     }
 
     @Test
@@ -74,7 +76,7 @@ public class JpaDemo {
     public void iCanCreateCompany() {
         CompanyEntity company = new CompanyEntity();
         company.setName("Hibernate inc. LTD");
-        company.setDescription("The best JPA implements");
+//        company.setDescription("The best JPA implements");
 
         entityManager.getTransaction().begin();
         entityManager.persist(company);
@@ -118,7 +120,7 @@ public class JpaDemo {
     public void createEmps(){
         CompanyEntity company = new CompanyEntity();
         company.setName("Inno");
-        company.setDescription("Courses");
+//        company.setDescription("Courses");
         company.setActive(true);
 
         entityManager.getTransaction().begin();
@@ -126,7 +128,7 @@ public class JpaDemo {
         entityManager.getTransaction().commit();
 
         EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setCompanyId(company.getId());
+//        employee1.setCompanyId(company.getId());
         employee1.setFirstName("Steve");
         employee1.setLastName("Rogers");
         employee1.setPhone("+7987654345678");
@@ -134,7 +136,7 @@ public class JpaDemo {
         employee1.setChangeTimestamp(Timestamp.valueOf(LocalDateTime.now()));
 
         EmployeeEntity employee2 = new EmployeeEntity();
-        employee2.setCompanyId(company.getId());
+//        employee2.setCompanyId(company.getId());
         employee2.setFirstName("Natasha");
         employee2.setLastName("Romanov");
         employee2.setPhone("+745678934");

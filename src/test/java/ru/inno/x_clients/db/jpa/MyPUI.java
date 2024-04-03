@@ -8,6 +8,7 @@ import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import ru.inno.x_clients.db.jpa.entity.CompanyEntity;
 import ru.inno.x_clients.db.jpa.entity.EmployeeEntity;
+import ru.inno.x_clients.db.jpa.entity.TestEntity;
 
 import javax.sql.DataSource;
 import java.net.URL;
@@ -31,7 +32,8 @@ public class MyPUI implements PersistenceUnitInfo {
     public List<String> getManagedClassNames() {
         return List.of(
                 CompanyEntity.class.getName(),
-                EmployeeEntity.class.getName()
+                EmployeeEntity.class.getName(),
+                TestEntity.class.getName()
                 // Author.class.getName(),
                 // Book.class.getName(),
                 // Chapter.class.getName(),
