@@ -13,6 +13,8 @@ import ru.inno.x_clients.db.jpa.MyPUI;
 import ru.inno.x_clients.db.jpa.entity.CompanyEntity;
 import ru.inno.x_clients.db.jpa.entity.EmployeeEntity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 
@@ -110,6 +112,40 @@ public class JpaDemo {
         // 2
         Query query = entityManager.createQuery("DELETE FROM CompanyEntity obj WHERE obj.id=:idToDelete");
         query.setParameter("idToDelete", id);
+    }
+
+    @Test
+    public void createEmps(){
+        CompanyEntity company = new CompanyEntity();
+        company.setName("Inno");
+        company.setDescription("Courses");
+        company.setActive(true);
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(company); // назначился id
+        entityManager.getTransaction().commit();
+
+        EmployeeEntity employee1 = new EmployeeEntity();
+        employee1.setCompanyId(company.getId());
+        employee1.setFirstName("Steve");
+        employee1.setLastName("Rogers");
+        employee1.setPhone("+7987654345678");
+        employee1.setCreateTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+        employee1.setChangeTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+
+        EmployeeEntity employee2 = new EmployeeEntity();
+        employee2.setCompanyId(company.getId());
+        employee2.setFirstName("Natasha");
+        employee2.setLastName("Romanov");
+        employee2.setPhone("+745678934");
+        employee2.setCreateTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+        employee2.setChangeTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(employee1);
+        entityManager.persist(employee2);
+        entityManager.getTransaction().commit();
     }
 
     private List<CompanyEntity> getCompaniesByName(String companyName) {

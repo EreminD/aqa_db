@@ -3,6 +3,7 @@ package ru.inno.x_clients.db.jpa.entity;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -16,11 +17,11 @@ public class EmployeeEntity {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
     @Basic
-    @Column(name = "create_timestamp", nullable = false)
-    private Object createTimestamp;
+    @Column(name = "create_timestamp")
+    private Timestamp createTimestamp;
     @Basic
-    @Column(name = "change_timestamp", nullable = false)
-    private Object changeTimestamp;
+    @Column(name = "change_timestamp")
+    private Timestamp changeTimestamp;
     @Basic
     @Column(name = "first_name", nullable = false, length = 20)
     private String firstName;
@@ -44,7 +45,7 @@ public class EmployeeEntity {
     private String avatarUrl;
     @Basic
     @Column(name = "company_id", nullable = false)
-    private int companyId;
+    private long companyId;
 
     public int getId() {
         return id;
@@ -66,7 +67,7 @@ public class EmployeeEntity {
         return createTimestamp;
     }
 
-    public void setCreateTimestamp(Object createTimestamp) {
+    public void setCreateTimestamp(Timestamp createTimestamp) {
         this.createTimestamp = createTimestamp;
     }
 
@@ -74,7 +75,7 @@ public class EmployeeEntity {
         return changeTimestamp;
     }
 
-    public void setChangeTimestamp(Object changeTimestamp) {
+    public void setChangeTimestamp(Timestamp changeTimestamp) {
         this.changeTimestamp = changeTimestamp;
     }
 
@@ -134,11 +135,11 @@ public class EmployeeEntity {
         this.avatarUrl = avatarUrl;
     }
 
-    public int getCompanyId() {
+    public long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(long companyId) {
         this.companyId = companyId;
     }
 
