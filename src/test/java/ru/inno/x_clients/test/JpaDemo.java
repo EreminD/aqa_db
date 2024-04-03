@@ -148,6 +148,18 @@ public class JpaDemo {
         entityManager.getTransaction().commit();
     }
 
+    @Test
+    public void iCanGetCompanyAndEmpList(){
+        int id = 3448;
+
+        CompanyEntity company = entityManager.find(CompanyEntity.class, id);
+
+        TypedQuery<EmployeeEntity> query = entityManager.createQuery("select obj from EmployeeEntity obj where obj.companyId = :comp_id", EmployeeEntity.class);
+        query.setParameter("comp_id", company.getId());
+        List<EmployeeEntity> emps = query.getResultList();
+
+    }
+
     private List<CompanyEntity> getCompaniesByName(String companyName) {
         TypedQuery<CompanyEntity> getByName = entityManager.createQuery("SELECT obj FROM CompanyEntity obj WHERE obj.name=:desiredName", CompanyEntity.class);
         getByName.setParameter("desiredName", companyName);
