@@ -13,6 +13,10 @@ import ru.inno.x_clients.db.jpa.MyPUI;
 import ru.inno.x_clients.db.jpa.entity.CompanyEntity;
 import ru.inno.x_clients.db.jpa.entity.EmployeeEntity;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,10 +29,13 @@ public class JpaDemo {
     private EntityManager entityManager;
 
     @BeforeEach
-    public void setUp() {
-        String connectionString = "jdbc:postgresql://dpg-cn1542en7f5s73fdrigg-a.frankfurt-postgres.render.com/x_clients_xxet";
-        String user = "x_clients_user";
-        String pass = "x7ngHjC1h08a85bELNifgKmqZa8KIR40";
+    public void setUp() throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(Path.of("src/test/resources/db.properties").toFile()));
+
+        String connectionString = properties.getProperty("db.connection_string");
+        String user = properties.getProperty("db.user");
+        String pass = properties.getProperty("db.pass");
 
         Properties props = new Properties();
         props.put("hibernate.connection.driver_class", "org.postgresql.Driver");
@@ -37,9 +44,9 @@ public class JpaDemo {
         props.put("hibernate.connection.password", pass);
         props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         props.put("hibernate.connection.autocommit", "true");
-        props.put("hibernate.show_sql", "true");
+        props.put("hibernate.show_sql", properties.getProperty("db.show_sql"));
         props.put("hibernate.format_sql", "true");
-        props.put("hibernate.hbm2ddl.auto", "validate"); //update
+        props.put("hibernate.hbm2ddl.auto", properties.getProperty("db.strategy")); //update
 
         PersistenceUnitInfo persistenceUnitInfo = new MyPUI(props);
         HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
