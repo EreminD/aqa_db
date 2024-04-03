@@ -1,4 +1,4 @@
-package ru.inno.x_clients.test;
+package ru.inno.x_clients.db.jpa;
 
 import jakarta.persistence.SharedCacheMode;
 import jakarta.persistence.ValidationMode;

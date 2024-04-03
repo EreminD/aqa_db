@@ -3,11 +3,13 @@ package ru.inno.x_clients.test;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.inno.x_clients.db.jpa.MyPUI;
 import ru.inno.x_clients.db.jpa.entity.CompanyEntity;
 import ru.inno.x_clients.db.jpa.entity.EmployeeEntity;
 
@@ -101,17 +103,18 @@ public class JpaDemo {
     public void iCanDeleteCompanyById() {
         int id = 3226;
 
-        CompanyEntity toDelete = new CompanyEntity();
-        toDelete.setId(id);
-
-        entityManager.persist(toDelete);
+        // 1
+        CompanyEntity toDelete = entityManager.find(CompanyEntity.class, id);
         entityManager.remove(toDelete);
+
+        // 2
+        Query query = entityManager.createQuery("DELETE FROM CompanyEntity obj WHERE obj.id=:idToDelete");
+        query.setParameter("idToDelete", id);
     }
 
     private List<CompanyEntity> getCompaniesByName(String companyName) {
         TypedQuery<CompanyEntity> getByName = entityManager.createQuery("SELECT obj FROM CompanyEntity obj WHERE obj.name=:desiredName", CompanyEntity.class);
         getByName.setParameter("desiredName", companyName);
         return getByName.getResultList();
-
     }
 }
